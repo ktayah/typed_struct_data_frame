@@ -16,10 +16,7 @@ defmodule TypedStructDataFrame.MixProject do
       docs: [
         main: "TypedStructDataFrame",
         source_url: @repo_url,
-        extras: [
-          "README.md",
-          "LICENSE.md": [title: "License"]
-        ]
+        extras: ["README.md"]
       ]
     ]
   end
