@@ -92,6 +92,7 @@ defmodule TypedStructDataFrame do
     end
   end
 
+  @doc false
   def convert_df_row_fields(df_row, convert_fields, convert_callback) do
     Enum.reduce(convert_fields, df_row, fn convert_field, df_row ->
       convert_field = Atom.to_string(convert_field)
@@ -99,12 +100,14 @@ defmodule TypedStructDataFrame do
     end)
   end
 
+  @doc false
   def convert_struct_fields(map, convert_fields, convert_callback) do
     Enum.reduce(convert_fields, map, fn convert_field, map ->
       Map.replace(map, convert_field, convert_callback.(map[convert_field]))
     end)
   end
 
+  @doc false
   def convert_df_row_to_struct(df_row, mod) do
     df_row
     |> Enum.map(fn {key, value} -> {String.to_existing_atom(key), value} end)
@@ -112,6 +115,7 @@ defmodule TypedStructDataFrame do
     |> then(&struct(mod, &1))
   end
 
+  @doc false
   def to_df_type(type) do
     if type == Ecto.Enum do
       raise "Ecto.Enum is not supported"
