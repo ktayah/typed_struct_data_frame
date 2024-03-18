@@ -1,8 +1,6 @@
 defmodule TypedStructDataFrame do
   use TypedStruct.Plugin
 
-  alias Belay.ToDecimal
-  alias Belay.ToMoney
   alias Explorer.DataFrame, as: DF
 
   @to_df_conversion_mapping %{
@@ -51,17 +49,13 @@ defmodule TypedStructDataFrame do
     quote do
       @spec from_dataframe(DF.t()) :: [__MODULE__.t()]
       def from_dataframe(df) do
-        if not function_exported?(__MODULE__, :new!, 1) do
-          raise "Could not detect TypedStructDefNew plugin being utilized, #{__MODULE__}.from_dataframe/1 requires TypedStructDefNew plugin"
-        end
-
         df
         |> DF.to_rows()
         |> Enum.map(fn df_row ->
           df_row
-          |> TypedStructDataFrame.convert_df_row_fields(@money_fields, &ToMoney.to_money/1)
-          |> TypedStructDataFrame.convert_df_row_fields(@decimal_fields, &ToDecimal.to_decimal/1)
-          |> __MODULE__.new!()
+          |> TypedStructDataFrame.convert_df_row_fields(@money_fields, &Money.parse!/1)
+          |> TypedStructDataFrame.convert_df_row_fields(@decimal_fields, &Decimal.from_float/1)
+          |> TypedStructDataFrame.convert_df_row_to_struct(__MODULE__)
         end)
       end
 
@@ -109,6 +103,13 @@ defmodule TypedStructDataFrame do
     Enum.reduce(convert_fields, map, fn convert_field, map ->
       Map.replace(map, convert_field, convert_callback.(map[convert_field]))
     end)
+  end
+
+  def convert_df_row_to_struct(df_row, mod) do
+    df_row
+    |> Enum.map(fn {key, value} -> {String.to_existing_atom(key), value} end)
+    |> Enum.into(%{})
+    |> then(&struct(mod, &1))
   end
 
   def to_df_type(type) do
