@@ -47,4 +47,39 @@ be found at <https://hexdocs.pm/typed_struct_data_frame>.
         field :net_worth, Money.Ecto.Amount.Type
     end
   end
+
+  iex> PersonProfile.dtypes()
+  [name: :string, age: :integer, is_developer: :boolean, score: :float, net_worth: :float]
+
+  iex> PersonProfile.empty_df()
+  #Explorer.DataFrame<
+    Polars[0 x 5]
+    name string []
+    age integer []
+    is_developer boolean []
+    score float []
+    net_worth float []
+  >
+
+  iex > profile = %PersonProfile{name: "Kevin", age: 25, is_developer: true, score: Decimal.from_float(5.0), net_worth: Money.new(100_00, :USD)}
+  iex > df = PersonProfile.to_dataframe(profile)
+  #Explorer.DataFrame<
+    Polars[1 x 5]
+    age integer [25]
+    is_developer boolean [true]
+    name string ["Kevin"]
+    net_worth float [100.0]
+    score float [5.0]
+  >
+
+  iex > PersonProfile.from_dataframe(df)
+  [
+    %PersonProfile{
+      net_worth: %Money{amount: 10000, currency: :USD},
+      score: Decimal.new("5.0"),
+      is_developer: true,
+      age: 25,
+      name: "Kevin"
+    }
+  ]
 ```
