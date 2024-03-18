@@ -7,7 +7,7 @@ defmodule TypedStructDataFrame.MixProject do
     [
       app: :typed_struct_data_frame,
       version: "0.1.0",
-      elixir: "~> 1.15",
+      elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       description: description(),
@@ -53,6 +53,7 @@ defmodule TypedStructDataFrame.MixProject do
     [
       licenses: ["MIT"],
       links: %{
+        "Changelog" => "https://hexdocs.pm/typed_struct/changelog.html",
         "GitHub" => @repo_url
       }
     ]
