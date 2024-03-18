@@ -22,11 +22,6 @@ defmodule TypedStructDataFrameTest do
 
   require Explorer.DataFrame, as: DF
 
-  setup_all do
-    Application.put_env(:money, :default_currency, :USD)
-    :ok
-  end
-
   describe "dtypes/0" do
     test "creates the correct dtypes for each field type" do
       assert TypedStructDataFrameTestMessage.dtypes() == [
