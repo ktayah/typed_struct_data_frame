@@ -1,5 +1,7 @@
 # TypedStructDataFrame
 
+[![Hex.pm](https://img.shields.io/hexpm/v/typed_struct_data_frame.svg)](https://hex.pm/packages/typed_struct_data_frame)
+
 TypedStructDataFrame is a plugin library for the [TypedStruct](https://github.com/ejpcmac/typed_struct) library
 
 ## Rationale
